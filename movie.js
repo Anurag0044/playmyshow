@@ -61,7 +61,7 @@ searchImdbInput.addEventListener('keypress', (event) => {
 
 document.getElementById('seriesNavButton').addEventListener('click', function(e) {
   e.preventDefault();
-  window.location.href = '../for_series/series.html';
+  window.location.href = 'series.html';
 });
 
 window.onload = () => {
