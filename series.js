@@ -137,7 +137,7 @@ searchButton.addEventListener('click', () => {
   }
 });
 
-movieNavButton.addEventListener('click', () => window.location.href = '../for_movie/movie.html');
+movieNavButton.addEventListener('click', () => window.location.href = 'movie.html');
 
 seriesNavButton.addEventListener('click', () => {
   currentImdbId = 'tt3107288';
