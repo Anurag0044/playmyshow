@@ -1,0 +1,23 @@
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #1a202c; /* Dark background */
+  color: #e2e8f0; /* Light text color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  height: 100vh;
+  margin: 0;
+  transition: opacity 0.2s ease;
+}
+body{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 1rem;
+}
+iframe {
+  border-radius: 0.75rem;
+  width: 100%;
+  height: 100%;
+}
