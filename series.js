@@ -410,7 +410,7 @@ searchImdbInput.addEventListener('keypress', (event) => {
 movieNavButton.addEventListener('click', () => {
     // Assuming 'for_movie/index.html' is in a sibling directory to 'for_series'
     // Adjust path if your file structure is different (e.g., if both are in root)
-    window.location.href = '../for_movie/movie.html';
+    window.location.href = 'movie.html';
 });
 
 // Navigation Button: Series (reloads default series)
