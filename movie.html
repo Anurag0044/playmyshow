@@ -15,21 +15,59 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="movie.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #1a202c;
+      color: #e2e8f0;
+    }
+
+    iframe {
+      border-radius: 0.75rem;
+      width: 100%;
+      height: 100%;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #374151;
+      border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #a78bfa;
+      border-radius: 10px;
+      border: 2px solid #374151;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background-color: #8b5cf6;
+    }
+
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: #a78bfa #374151;
+    }
+  </style>
 </head>
 
-<body class="flex flex-col items-center justify-center">
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
   <div class="container mx-auto flex-grow flex flex-col items-center justify-center p-4">
     <!-- Header -->
     <div class="w-full max-w-2xl mb-6">
-      <h1 class="text-3xl md:text-4xl font-bold text-center mb-4 text-purple-400">PlayMyShow-series</h1>
-        <div class="flex justify-center gap-4 mb-6">
+      <h1 class="text-3xl md:text-4xl font-bold text-center mb-4 text-purple-400">PlayMyShow-movies</h1>
+      <div class="flex justify-center gap-4 mb-6">
         <button id="movieNavButton" class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
           <i class="fas fa-film mr-2"></i> Movies
         </button>
-         <button id="seriesNavButton" class="px-6 py-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
+        <button id="seriesNavButton" class="px-6 py-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
           <i class="fas fa-tv mr-2"></i> Series
+        </button>
+        <button id="historyNavButton" class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
+          <i class="fas fa-history mr-2"></i> History
         </button>
       </div>
 
@@ -43,19 +81,60 @@
         </button>
       </div>
 
-      <!-- Message Output -->
       <div id="messageContainer" class="mt-4 w-full text-center"></div>
     </div>
 
-    <!-- Video Player -->
-    <div class="w-full max-w-4xl bg-gray-800 rounded-xl shadow-2xl overflow-hidden mb-6"
-      style="position: relative; padding-top: 56.25%;">
-      <iframe id="videoPlayer" src="https://www.2embed.cc/embed/tt10676048" class="absolute top-0 left-0 w-full h-full"
-        frameborder="0" scrolling="no" allowfullscreen></iframe>
+    <!-- Video Player Container -->
+    <div id="videoPlayerContainer" class="w-full max-w-4xl bg-gray-800 rounded-xl shadow-2xl overflow-hidden mb-6" style="position: relative; padding-top: 56.25%;">
+      <iframe id="videoPlayer" src="https://www.2embed.cc/embed/tt10676048" class="absolute top-0 left-0 w-full h-full" frameborder="0" scrolling="no" allowfullscreen></iframe>
     </div>
 
     <!-- IMDb Instructions -->
-    <div class="w-full max-w-2xl bg-gray-800 rounded-xl shadow-xl p-6 text-center text-gray-300">
+    <div okay="imdbInstructions" class="w-full max-w-2xl bg-gray-800 rounded-xl shadow-xl p-6 text-center text-gray-300">
+      <h2 class="text-xl font-semibold mb-3 text-purple-300">
+        <span class="text-yellow-400">🧩</span> Need the IMDb Movie ID? Here's How to Find It Like a Pro:
+      </h2>
+      <p class="mb-2"><span class="text-purple-200">🔍</span> Head to IMDb.com and search for your favorite movie.</p>
+      <p class="mb-2"><span class="text-purple-200">🖱️</span> Click on the movie, and look at the URL in your browser.</p>
+      <p class="mb-4"><span class="text-purple-200">🎯</span> Grab the code that starts with <span class="font-bold text-green-400">tt</span> — that’s your magic key!</p>
+      <p class="font-semibold text-gray-200 mb-4">
+        <span class="text-cyan-400">🧠</span> Example:<br>
+        URL: <span class="text-gray-400">https://www.imdb.com/title/tt4574334/</span><br>
+        Your ID: <span class="text-yellow-300">tt4574334</span>
+      </p>
+      <p class="mt-6 text-sm text-gray-400">Made with <span class="text-red-500">♥</span> by: <span class="font-bold text-gray-200">Anurag </span></p>
+    </div>
+
+    <!-- History Popup -->
+    <div id="historyPopup" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+      <div class="bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md relative">
+        <button id="closeHistoryPopup" class="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl">&times;</button>
+        <h2 class="text-2xl font-bold text-purple-400 mb-4 text-center">Watch History</h2>
+        <div id="historyList" class="max-h-80 overflow-y-auto custom-scrollbar pr-2">
+          <p class="text-gray-400 text-center" id="noHistoryMessage">No history yet. Start watching some movies!</p>
+        </div>
+
+        <button id="clearHistoryButton" class="mt-6 w-full py-3 rounded-full bg-red-700 hover:bg-red-800 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center shadow-lg">
+          <i class="fas fa-trash-alt mr-2"></i> Clear All History
+        </button>
+
+        <!-- Confirmation -->
+        <div id="clearConfirmationDialog" class="hidden absolute inset-0 bg-gray-900 bg-opacity-90 rounded-xl flex flex-col items-center justify-center p-4">
+          <p class="text-lg text-white font-semibold mb-6 text-center">Are you sure you want to clear all history?</p>
+          <div class="flex gap-4">
+            <button id="confirmClearButton" class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105">
+              Yes, Clear
+            </button>
+            <button id="cancelClearButton" class="px-6 py-3 rounded-full bg-gray-500 hover:bg-gray-600 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- IMDb Instructions -->
+    <div id="imdbInstructions" class="w-full max-w-2xl bg-gray-800 rounded-xl shadow-xl p-6 text-center text-gray-300">
       <h2 class="text-xl font-semibold mb-3 text-purple-300">
         <span class="text-yellow-400">🧩</span> Need the IMDb Movie ID? Here's How to Find It Like a Pro:
       </h2>
@@ -72,11 +151,6 @@
       <p class="mt-6 text-sm text-gray-400">Made with <span class="text-red-500">♥</span> by: <span
           class="font-bold text-gray-200">Anurag </span></p>
     </div>
-  </div>
-
-
-  <!-- JS File -->
   <script src="movie.js"></script>
 </body>
-
 </html>
