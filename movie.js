@@ -126,7 +126,7 @@
       searchImdbInput.value = '';
     };
     document.getElementById('seriesNavButton').onclick = () => {
-      window.location.href = '../for_series/series.html';
+      window.location.href = 'series.html';
     };
 
     window.onload = () => {
