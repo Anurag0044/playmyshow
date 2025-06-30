@@ -5,23 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PlayMyShow-series</title>
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Fonts and Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 
-  <!-- Custom Styles -->
   <link rel="stylesheet" href="series.css">
 </head>
-<body class="flex flex-col items-center justify-center">
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
   <div class="container mx-auto flex-grow flex flex-col items-center justify-center p-4">
-    <!-- Header -->
     <div class="w-full max-w-2xl mb-6">
       <h1 class="text-3xl md:text-4xl font-bold text-center mb-4 text-purple-400">PlayMyShow-series</h1>
 
-      <!-- Navigation -->
       <div class="flex justify-center gap-4 mb-6">
         <button id="movieNavButton" class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
           <i class="fas fa-film mr-2"></i> Movies
@@ -29,23 +25,28 @@
         <button id="seriesNavButton" class="px-6 py-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
           <i class="fas fa-tv mr-2"></i> Series
         </button>
+        <button id="historyNavButton" class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
+          <i class="fas fa-history mr-2"></i> History
+        </button>
       </div>
 
-      <!-- Search Bar -->
       <div class="relative flex items-center w-full bg-gray-700 rounded-xl shadow-lg">
-        <input type="text" id="searchImdbInput" placeholder="Enter IMDb ID (e.g., tt3107288)" class="flex-grow p-3 pl-5 pr-12 rounded-xl bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"/>
-        <button id="searchButton" class="absolute right-3 p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500">
+        <input type="text" id="searchImdbInput" placeholder="Enter IMDb Series ID (e.g., tt3107288)"
+          class="flex-grow p-3 pl-5 pr-12 rounded-xl bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+        <button id="searchButton"
+          class="absolute right-3 p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500">
           <i class="fas fa-search"></i>
         </button>
       </div>
+
+      <div id="mainMessageContainer" class="mt-4 w-full text-center"></div>
+
     </div>
 
-    <!-- Video Player -->
     <div class="w-full max-w-4xl bg-gray-800 rounded-xl shadow-2xl overflow-hidden mb-6" style="position: relative; padding-top: 56.25%;">
       <iframe id="videoPlayer" src="https://www.2embed.skin/embedtv/tt3107288&s=1&e=1" class="absolute top-0 left-0 w-full h-full" frameborder="0" scrolling="no" allowfullscreen></iframe>
     </div>
 
-    <!-- Seasons and Episodes -->
     <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="bg-gray-800 rounded-xl shadow-xl p-4">
         <h2 class="text-xl font-semibold mb-3 text-center text-purple-300">Available Seasons</h2>
@@ -62,21 +63,53 @@
     </div>
   </div>
 
-  <!-- IMDb Instructions -->
-  <div class="w-full max-w-4xl mt-8 p-6 bg-gray-800 rounded-xl shadow-2xl text-center">
-    <h3 class="text-xl font-semibold mb-3 text-purple-300">🧩 Need the IMDb Series ID? Here's How to Find It Like a Pro:</h3>
-    <ul class="list-none p-0 mb-4 text-left inline-block">
-      <li class="mb-2 text-gray-300"><span class="font-bold text-purple-200">🔍</span> Search your show on <a href="https://www.imdb.com" target="_blank" class="text-blue-400 hover:underline">IMDb.com</a>.</li>
-      <li class="mb-2 text-gray-300"><span class="font-bold text-purple-200">🖱️</span> Click the series title and check the URL.</li>
-      <li class="text-gray-300"><span class="font-bold text-purple-200">🎯</span> Copy the code starting with <code class="bg-gray-700 px-1 rounded text-purple-100">tt</code>.</li>
-    </ul>
-    <p class="text-gray-300 font-semibold mb-4">🧠 Example:</p>
-    <p class="text-gray-400 mb-2">URL: <span class="text-blue-400">https://www.imdb.com/title/tt4574334/</span></p>
-    <p class="text-gray-400 font-bold mb-6">Your ID: <span class="text-purple-400">tt4574334</span></p>
-    <p class="text-gray-500 text-sm">Made with ♥ by: <span class="font-bold text-purple-400">Anurag</span></p>
+   <!-- IMDb Instructions -->
+    <div id="imdbInstructions" class="w-full max-w-2xl bg-gray-800 rounded-xl shadow-xl p-6 text-center text-gray-300">
+      <h2 class="text-xl font-semibold mb-3 text-purple-300">
+        <span class="text-yellow-400">🧩</span> Need the IMDb Movie ID? Here's How to Find It Like a Pro:
+      </h2>
+      <p class="mb-2"><span class="text-purple-200">🔍</span> Head to IMDb.com and search for your favorite movie.</p>
+      <p class="mb-2"><span class="text-purple-200">🖱️</span> Click on the movie, and look at the URL in your browser.
+      </p>
+      <p class="mb-4"><span class="text-purple-200">🎯</span> Grab the code that starts with <span
+          class="font-bold text-green-400">tt</span> — that’s your magic key!</p>
+      <p class="font-semibold text-gray-200 mb-4">
+        <span class="text-cyan-400">🧠</span> Example:<br>
+        URL: <span class="text-gray-400">https://www.imdb.com/title/tt4574334/</span><br>
+        Your ID: <span class="text-yellow-300">tt4574334</span>
+      </p>
+      <p class="mt-6 text-sm text-gray-400">Made with <span class="text-red-500">♥</span> by: <span
+          class="font-bold text-gray-200">Anurag </span></p>
+    </div>
+
+  <!-- History Popup -->
+
+  <div id="historyPopup" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+    <div class="bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md relative">
+      <button id="closeHistoryPopup" class="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl">&times;</button>
+      <h2 class="text-2xl font-bold text-purple-400 mb-4 text-center">Watch History</h2>
+      <div id="historyList" class="max-h-80 overflow-y-auto custom-scrollbar pr-2">
+        <p class="text-gray-400 text-center" id="noHistoryMessage">No history yet. Start watching some series!</p>
+      </div>
+
+      <button id="clearHistoryButton" class="mt-6 w-full py-3 rounded-full bg-red-700 hover:bg-red-800 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center shadow-lg">
+        <i class="fas fa-trash-alt mr-2"></i> Clear All History
+      </button>
+
+      <div id="clearConfirmationDialog" class="hidden absolute inset-0 bg-gray-900 bg-opacity-90 rounded-xl flex flex-col items-center justify-center p-4">
+        <p class="text-lg text-white font-semibold mb-6 text-center">Are you sure you want to clear all history?</p>
+        <div class="flex gap-4">
+          <button id="confirmClearButton" class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105">
+            Yes, Clear
+          </button>
+          <button id="cancelClearButton" class="px-6 py-3 rounded-full bg-gray-500 hover:bg-gray-600 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- JavaScript -->
   <script src="series.js"></script>
 </body>
 </html>
