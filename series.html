@@ -1,115 +1,426 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PlayMyShow-series</title>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-
-  <link rel="stylesheet" href="series.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayMyShow</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Apply Inter font and dark theme to the body */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* A dark slate color */
+            color: #e2e8f0; /* Light off-white text */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            padding: 1rem; /* Padding around the content */
+        }
+        /* Apply rounded corners to the iframe for a modern look */
+        iframe {
+            border-radius: 0.75rem; /* rounded-xl Tailwind class equivalent */
+            width: 100%; /* Make iframe responsive to its container */
+            height: 100%; /* Make iframe responsive to its container */
+        }
+        /* Custom scrollbar styling for better aesthetics on season/episode lists */
+        .custom-scroll::-webkit-scrollbar {
+            width: 8px; /* Width of the scrollbar */
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #2d3748; /* Darker background for the track */
+            border-radius: 10px; /* Rounded corners for the track */
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #4a5568; /* Greyish thumb color */
+            border-radius: 10px; /* Rounded corners for the thumb */
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* Lighter grey on hover */
+        }
+    </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-  <div class="container mx-auto flex-grow flex flex-col items-center justify-center p-4">
-    <div class="w-full max-w-2xl mb-6">
-      <h1 class="text-3xl md:text-4xl font-bold text-center mb-4 text-purple-400">PlayMyShow-series</h1>
+<body class="flex flex-col items-center justify-center">
+    <div class="container mx-auto flex-grow flex flex-col items-center justify-center p-4">
+        <!-- Application Header and Search Bar -->
+        <div class="w-full max-w-2xl mb-6">
+            <h1 id="appTitle" class="text-3xl md:text-4xl font-bold text-center mb-4 text-purple-400">PlayMyShow - Series</h1>
 
-      <div class="flex justify-center gap-4 mb-6">
-        <button id="movieNavButton" class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
-          <i class="fas fa-film mr-2"></i> Movies
-        </button>
-        <button id="seriesNavButton" class="px-6 py-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
-          <i class="fas fa-tv mr-2"></i> Series
-        </button>
-        <button id="historyNavButton" class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
-          <i class="fas fa-history mr-2"></i> History
-        </button>
-      </div>
+            <!-- Navigation for Movies and Series -->
+            <div class="flex justify-center gap-4 mb-6">
+                <button
+                    id="movieNavButton"
+                    class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg"
+                >
+                    <i class="fas fa-film mr-2"></i> Movies
+                </button>
+                <button
+                    id="seriesNavButton"
+                    class="px-6 py-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg"
+                >
+                    <i class="fas fa-tv mr-2"></i> Series
+                </button>
+            </div>
 
-      <div class="relative flex items-center w-full bg-gray-700 rounded-xl shadow-lg">
-        <input type="text" id="searchImdbInput" placeholder="Enter IMDb Series ID (e.g., tt3107288)"
-          class="flex-grow p-3 pl-5 pr-12 rounded-xl bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500" />
-        <button id="searchButton"
-          class="absolute right-3 p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500">
-          <i class="fas fa-search"></i>
-        </button>
-      </div>
-
-      <div id="mainMessageContainer" class="mt-4 w-full text-center"></div>
-
-    </div>
-
-    <div class="w-full max-w-4xl bg-gray-800 rounded-xl shadow-2xl overflow-hidden mb-6" style="position: relative; padding-top: 56.25%;">
-      <iframe id="videoPlayer" src="https://www.2embed.skin/embedtv/tt3107288&s=1&e=1" class="absolute top-0 left-0 w-full h-full" frameborder="0" scrolling="no" allowfullscreen></iframe>
-    </div>
-
-    <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-gray-800 rounded-xl shadow-xl p-4">
-        <h2 class="text-xl font-semibold mb-3 text-center text-purple-300">Available Seasons</h2>
-        <div id="seasonsList" class="flex flex-wrap justify-center gap-2 custom-scroll max-h-40 overflow-y-auto p-1">
-          <p class="text-gray-400 text-sm">Loading seasons...</p>
+            <div class="relative flex items-center w-full bg-gray-700 rounded-xl shadow-lg">
+                <!-- Search input field -->
+                <input
+                    type="text"
+                    id="searchImdbInput"
+                    placeholder="Enter IMDb ID (e.g., tt3107288)"
+                    class="flex-grow p-3 pl-5 pr-12 rounded-xl bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+                <!-- Search button with Font Awesome icon -->
+                <button
+                    id="searchButton"
+                    class="absolute right-3 p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <!-- Message container for errors or info -->
+            <div id="messageContainer" class="mt-4 w-full text-center"></div>
         </div>
-      </div>
-      <div class="bg-gray-800 rounded-xl shadow-xl p-4">
-        <h2 class="text-xl font-semibold mb-3 text-center text-purple-300">Episodes in Current Season (<span id="currentSeasonDisplay">N/A</span>)</h2>
-        <div id="episodesList" class="custom-scroll max-h-40 overflow-y-auto p-1">
-          <p class="text-gray-400 text-sm">Select a season to view episodes.</p>
+
+        <!-- Video Player Section -->
+        <div class="w-full max-w-4xl bg-gray-800 rounded-xl shadow-2xl overflow-hidden mb-6" style="position: relative; padding-top: 56.25%;">
+            <!-- This padding-top trick maintains a 16:9 aspect ratio for the iframe container -->
+            <iframe
+                id="videoPlayer"
+                src="https://www.2embed.skin/embedtv/tt3107288&s=1&e=1"
+                class="absolute top-0 left-0 w-full h-full"
+                frameborder="0"
+                scrolling="no"
+                allowfullscreen
+            ></iframe>
         </div>
-      </div>
-    </div>
-  </div>
 
-   <!-- IMDb Instructions -->
-    <div id="imdbInstructions" class="w-full max-w-2xl bg-gray-800 rounded-xl shadow-xl p-6 text-center text-gray-300">
-      <h2 class="text-xl font-semibold mb-3 text-purple-300">
-        <span class="text-yellow-400">🧩</span> Need the IMDb Movie ID? Here's How to Find It Like a Pro:
-      </h2>
-      <p class="mb-2"><span class="text-purple-200">🔍</span> Head to IMDb.com and search for your favorite movie.</p>
-      <p class="mb-2"><span class="text-purple-200">🖱️</span> Click on the movie, and look at the URL in your browser.
-      </p>
-      <p class="mb-4"><span class="text-purple-200">🎯</span> Grab the code that starts with <span
-          class="font-bold text-green-400">tt</span> — that’s your magic key!</p>
-      <p class="font-semibold text-gray-200 mb-4">
-        <span class="text-cyan-400">🧠</span> Example:<br>
-        URL: <span class="text-gray-400">https://www.imdb.com/title/tt4574334/</span><br>
-        Your ID: <span class="text-yellow-300">tt4574334</span>
-      </p>
-      <p class="mt-6 text-sm text-gray-400">Made with <span class="text-red-500">♥</span> by: <span
-          class="font-bold text-gray-200">Anurag </span></p>
-    </div>
+        <!-- Season and Episode Information Section -->
+        <div id="seriesInfoSection" class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Available Seasons List -->
+            <div class="bg-gray-800 rounded-xl shadow-xl p-4">
+                <h2 class="text-xl font-semibold mb-3 text-center text-purple-300">Available Seasons</h2>
+                <div id="seasonsList" class="flex flex-wrap justify-center gap-2 custom-scroll max-h-40 overflow-y-auto p-1">
+                    <!-- Seasons will be dynamically loaded here by JavaScript -->
+                    <p class="text-gray-400 text-sm">Loading seasons...</p>
+                </div>
+            </div>
 
-  <!-- History Popup -->
-
-  <div id="historyPopup" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
-    <div class="bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md relative">
-      <button id="closeHistoryPopup" class="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl">&times;</button>
-      <h2 class="text-2xl font-bold text-purple-400 mb-4 text-center">Watch History</h2>
-      <div id="historyList" class="max-h-80 overflow-y-auto custom-scrollbar pr-2">
-        <p class="text-gray-400 text-center" id="noHistoryMessage">No history yet. Start watching some series!</p>
-      </div>
-
-      <button id="clearHistoryButton" class="mt-6 w-full py-3 rounded-full bg-red-700 hover:bg-red-800 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center shadow-lg">
-        <i class="fas fa-trash-alt mr-2"></i> Clear All History
-      </button>
-
-      <div id="clearConfirmationDialog" class="hidden absolute inset-0 bg-gray-900 bg-opacity-90 rounded-xl flex flex-col items-center justify-center p-4">
-        <p class="text-lg text-white font-semibold mb-6 text-center">Are you sure you want to clear all history?</p>
-        <div class="flex gap-4">
-          <button id="confirmClearButton" class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105">
-            Yes, Clear
-          </button>
-          <button id="cancelClearButton" class="px-6 py-3 rounded-full bg-gray-500 hover:bg-gray-600 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105">
-            Cancel
-          </button>
+            <!-- Episodes in Current Season List -->
+            <div class="bg-gray-800 rounded-xl shadow-xl p-4">
+                <h2 class="text-xl font-semibold mb-3 text-center text-purple-300">Episodes in Current Season (<span id="currentSeasonDisplay">N/A</span>)</h2>
+                <div id="episodesList" class="custom-scroll max-h-40 overflow-y-auto p-1">
+                    <!-- Episodes will be dynamically loaded here by JavaScript -->
+                    <p class="text-gray-400 text-sm">Select a season to view episodes.</p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <script src="series.js"></script>
+    <!-- Instructions and Credits Section -->
+    <div id="imdbInstructionsSection" class="w-full max-w-4xl mt-8 p-6 bg-gray-800 rounded-xl shadow-2xl text-center">
+        <!-- Content will be dynamically loaded here by JavaScript -->
+    </div>
+
+    <script>
+        // OMDb API key provided by the user
+        const omdbApiKey = '98e7e519';
+
+        // Get references to DOM elements
+        const appTitle = document.getElementById('appTitle');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const searchImdbInput = document.getElementById('searchImdbInput');
+        const searchButton = document.getElementById('searchButton');
+        const seasonsListDiv = document.getElementById('seasonsList');
+        const episodesListDiv = document.getElementById('episodesList');
+        const currentSeasonDisplay = document.getElementById('currentSeasonDisplay');
+        const movieNavButton = document.getElementById('movieNavButton');
+        const seriesNavButton = document.getElementById('seriesNavButton');
+        const messageContainer = document.getElementById('messageContainer');
+        const seriesInfoSection = document.getElementById('seriesInfoSection');
+        const imdbInstructionsSection = document.getElementById('imdbInstructionsSection');
+
+        // State variables to keep track of the current mode, series, season, and episode
+        let currentMode = 'series'; // 'series' or 'movie'
+        let currentImdbId = 'tt3107288'; // Default IMDb ID for "Mr. Robot" (series)
+        let currentSeason = 1;
+        let currentEpisode = 1;
+        let totalSeasons = 0; // Stores the total number of seasons for the current series
+
+        // HTML content for IMDb instructions for series
+        const seriesInstructionsHTML = `
+            <h3 class="text-xl font-semibold mb-3 text-purple-300">🧩 Need the IMDb Series ID? Here's How to Find It Like a Pro:</h3>
+            <ul class="list-none p-0 mb-4 text-left inline-block">
+                <li class="mb-2 text-gray-300"><span class="font-bold text-purple-200">🔍</span> Head to <a href="https://www.imdb.com" target="_blank" class="text-blue-400 hover:underline">IMDb.com</a> and search for your favorite show.</li>
+                <li class="mb-2 text-gray-300"><span class="font-bold text-purple-200">🖱️</span> Click on the series, and look at the URL in your browser.</li>
+                <li class="text-gray-300"><span class="font-bold text-purple-200">🎯</span> Grab the code that starts with <code class="bg-gray-700 px-1 rounded text-purple-100">tt</code> — that’s your magic key!</li>
+            </ul>
+            <p class="text-gray-300 font-semibold mb-4">🧠 Example:</p>
+            <p class="text-gray-400 mb-2">URL: <span class="text-blue-400">https://www.imdb.com/title/tt3107288/</span></p>
+            <p class="text-gray-400 font-bold mb-6">Your ID: <span class="text-purple-400">tt3107288</span></p>
+            <p class="text-gray-500 text-sm">Made with ♥ by: <span class="font-bold text-purple-400">HAHA W40</span></p>
+        `;               
+
+        
+        
+
+        /**
+         * Displays a temporary message in the messageContainer.
+         * @param {string} message - The message text.
+         * @param {string} type - 'info' for blue background, 'error' for red background.
+         */
+        function showMessage(message, type = 'info') {
+            messageContainer.innerHTML = ''; // Clear previous messages
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `p-2 my-2 rounded-md ${type === 'error' ? 'bg-red-800 text-red-200' : 'bg-blue-800 text-blue-200'}`;
+            msgDiv.textContent = message;
+            messageContainer.appendChild(msgDiv);
+            // Optionally, clear the message after a few seconds
+            setTimeout(() => {
+                messageContainer.innerHTML = '';
+            }, 5000); // Message disappears after 5 seconds
+        }
+
+        /**
+         * Updates the `src` of the video player iframe based on currentImdbId, currentSeason, and currentEpisode.
+         * @param {string} type - 'series' or 'movie' to determine the 2embed URL structure.
+         */
+        function updateVideoPlayer(type) {
+            if (type === 'series') {
+                videoPlayer.src = `https://www.2embed.skin/embedtv/${currentImdbId}&s=${currentSeason}&e=${currentEpisode}`;
+            } else if (type === 'movie') {
+                videoPlayer.src = `https://www.2embed.cc/embed/${currentImdbId}`;
+            }
+            console.log(`Video player updated to: ${videoPlayer.src}`);
+        }
+
+        /**
+         * Sets up the UI for the Series viewing mode.
+         */
+        function showSeriesView() {
+            currentMode = 'series';
+            appTitle.textContent = 'PlayMyShow - Series';
+            searchImdbInput.placeholder = 'Enter IMDb ID (e.g., tt3107288)';
+            seriesInfoSection.style.display = 'grid'; // Show the series info section (grid for layout)
+            imdbInstructionsSection.innerHTML = seriesInstructionsHTML;
+            seriesNavButton.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+            seriesNavButton.classList.add('bg-purple-700'); // Highlight active button
+            movieNavButton.classList.remove('bg-blue-700');
+            movieNavButton.classList.add('bg-blue-600', 'hover:bg-blue-700'); // De-highlight other button
+        }
+
+        /**
+         * Sets up the UI for the Movie viewing mode.
+         */
+        function showMoviesView() {
+            currentMode = 'movie';
+            appTitle.textContent = 'PlayMyShow - Movies';
+            searchImdbInput.placeholder = 'Enter IMDb Movie ID (e.g., tt10676048)';
+            seriesInfoSection.style.display = 'none'; // Hide the series info section
+            imdbInstructionsSection.innerHTML = movieInstructionsHTML;
+            movieNavButton.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            movieNavButton.classList.add('bg-blue-700'); // Highlight active button
+            seriesNavButton.classList.remove('bg-purple-700');
+            seriesNavButton.classList.add('bg-purple-600', 'hover:bg-purple-700'); // De-highlight other button
+        }
+
+        /**
+         * Fetches series details (like total number of seasons) from the OMDb API.
+         * Updates the UI to show loading states and then renders season buttons.
+         * @param {string} imdbId - The IMDb ID of the series.
+         */
+        async function fetchSeriesDetails(imdbId) {
+            showMessage('Loading series details...', 'info');
+            seasonsListDiv.innerHTML = '<p class="text-gray-400 text-sm">Loading seasons...</p>'; // Show loading message
+            episodesListDiv.innerHTML = '<p class="text-gray-400 text-sm">Loading episodes...</p>';
+            currentSeasonDisplay.textContent = 'N/A'; // Reset current season display
+
+            try {
+                const response = await fetch(`https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`);
+                const data = await response.json();
+
+                if (data.Response === 'True' && data.Type === 'series') {
+                    currentImdbId = imdbId; // Update global IMDb ID
+                    totalSeasons = parseInt(data.totalSeasons, 10);
+                    renderSeasons();
+
+                    if (totalSeasons >= 1) {
+                        currentSeason = 1;
+                        await fetchSeasonEpisodes(currentImdbId, currentSeason);
+                        updateVideoPlayer('series');
+                        const firstSeasonButton = seasonsListDiv.querySelector('button');
+                        if (firstSeasonButton) {
+                            firstSeasonButton.classList.remove('bg-gray-600', 'hover:bg-purple-600', 'text-gray-200', 'hover:text-white');
+                            firstSeasonButton.classList.add('bg-purple-700', 'text-white', 'shadow-md');
+                        }
+                        showMessage(`Now playing series: ${data.Title}`, 'info');
+                    } else {
+                        showMessage(seasonsListDiv, 'No seasons found for this series.', 'error');
+                        showMessage(episodesListDiv, 'No episodes found.', 'error');
+                    }
+                } else {
+                    totalSeasons = 0;
+                    renderSeasons();
+                    showMessage(`Could not find series or it's not a series: ${data.Error || 'Unknown error'}`, 'error');
+                    showMessage(episodesListDiv, 'No episodes found.', 'error');
+                }
+            } catch (error) {
+                console.error('Error fetching series details:', error);
+                totalSeasons = 0;
+                renderSeasons();
+                showMessage('Failed to fetch series details. Please check your network or try again.', 'error');
+                showMessage(episodesListDiv, 'Failed to fetch episodes.', 'error');
+            }
+        }
+
+        /**
+         * Fetches movie details from the OMDb API to validate the IMDb ID.
+         * If valid, updates the video player.
+         * @param {string} imdbId - The IMDb ID of the movie.
+         */
+        async function fetchMovieDetails(imdbId) {
+            showMessage('Loading movie details...', 'info');
+
+            try {
+                const response = await fetch(`https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`);
+                const data = await response.json();
+
+                if (data.Response === 'True' && data.Type === 'movie') {
+                    currentImdbId = imdbId;
+                    updateVideoPlayer('movie');
+                    showMessage(`Now playing movie: ${data.Title} (${data.Year})`, 'info');
+                } else {
+                    const errorMessage = data.Error || 'Movie not found or it is not a movie type. Please try a different IMDb ID.';
+                    showMessage(`Error: ${errorMessage}`, 'error');
+                    console.error(`Error fetching movie details for ${imdbId}:`, errorMessage);
+                }
+            } catch (error) {
+                console.error('Error fetching movie details:', error);
+                showMessage('Failed to fetch movie details. Please check your network or try again.', 'error');
+            }
+        }
+
+        /**
+         * Renders buttons for each available season.
+         * Adds click handlers to each button to fetch episodes for the selected season.
+         */
+        function renderSeasons() {
+            seasonsListDiv.innerHTML = ''; // Clear existing season buttons
+
+            if (totalSeasons === 0) {
+                seasonsListDiv.innerHTML = '<p class="text-gray-400 text-sm">No seasons available.</p>';
+                return;
+            }
+
+            for (let i = 1; i <= totalSeasons; i++) {
+                const seasonButton = document.createElement('button');
+                seasonButton.textContent = `Season ${i}`;
+                seasonButton.className = `m-1 px-4 py-2 rounded-lg font-medium transition duration-200 ease-in-out
+                                         ${i === currentSeason ? 'bg-purple-700 text-white shadow-md' : 'bg-gray-600 hover:bg-purple-600 text-gray-200 hover:text-white'}`;
+                seasonButton.onclick = async () => {
+                    currentSeason = i;
+                    currentEpisode = 1;
+                    await fetchSeasonEpisodes(currentImdbId, currentSeason);
+                    updateVideoPlayer('series');
+
+                    document.querySelectorAll('#seasonsList button').forEach(btn => {
+                        btn.classList.remove('bg-purple-700', 'text-white', 'shadow-md');
+                        btn.classList.add('bg-gray-600', 'hover:bg-purple-600', 'text-gray-200', 'hover:text-white');
+                    });
+                    seasonButton.classList.remove('bg-gray-600', 'hover:bg-purple-600', 'text-gray-200', 'hover:text-white');
+                    seasonButton.classList.add('bg-purple-700', 'text-white', 'shadow-md');
+                };
+                seasonsListDiv.appendChild(seasonButton);
+            }
+        }
+
+        /**
+         * Fetches episodes for a specific season from the OMDb API.
+         * Renders the list of episodes and makes them clickable.
+         * @param {string} imdbId - The IMDb ID of the series.
+         * @param {number} seasonNumber - The season number to fetch episodes for.
+         */
+        async function fetchSeasonEpisodes(imdbId, seasonNumber) {
+            episodesListDiv.innerHTML = '<p class="text-gray-400 text-sm">Loading episodes...</p>';
+            currentSeasonDisplay.textContent = seasonNumber;
+
+            try {
+                const response = await fetch(`https://www.omdbapi.com/?i=${imdbId}&Season=${seasonNumber}&apikey=${omdbApiKey}`);
+                const data = await response.json();
+
+                episodesListDiv.innerHTML = '';
+
+                if (data.Response === 'True' && data.Episodes && data.Episodes.length > 0) {
+                    data.Episodes.forEach(episode => {
+                        const episodeDiv = document.createElement('div');
+                        episodeDiv.className = `p-3 mb-2 rounded-lg bg-gray-700 hover:bg-purple-800 transition duration-200 ease-in-out cursor-pointer shadow-sm`;
+                        episodeDiv.innerHTML = `<span class="font-semibold text-purple-200">E${episode.Episode}:</span> ${episode.Title}`;
+                        episodeDiv.onclick = () => {
+                            currentEpisode = parseInt(episode.Episode, 10);
+                            updateVideoPlayer('series');
+
+                            document.querySelectorAll('#episodesList div').forEach(div => {
+                                div.classList.remove('bg-purple-600');
+                                div.classList.add('bg-gray-700', 'hover:bg-purple-800');
+                            });
+                            episodeDiv.classList.remove('bg-gray-700', 'hover:bg-purple-800');
+                            episodeDiv.classList.add('bg-purple-600');
+                        };
+                        episodesListDiv.appendChild(episodeDiv);
+                    });
+                } else {
+                    showMessage(episodesListDiv, `No episodes found for Season ${seasonNumber}. ${data.Error || ''}`, 'error');
+                }
+            } catch (error) {
+                console.error(`Error fetching episodes for Season ${seasonNumber}:`, error);
+                showMessage(episodesListDiv, `Failed to fetch episodes for Season ${seasonNumber}. Please check your network or try again.`, 'error');
+            }
+        }
+
+        // Event listener for the search button click
+        searchButton.addEventListener('click', () => {
+            const inputVal = searchImdbInput.value.trim();
+            if (inputVal.startsWith('tt') && inputVal.length >= 9) {
+                if (currentMode === 'series') {
+                    fetchSeriesDetails(inputVal);
+                } else { // currentMode === 'movie'
+                    fetchMovieDetails(inputVal);
+                }
+            } else {
+                showMessage('Please enter a valid IMDb ID starting with "tt" (e.g., tt3107288 for series, tt10676048 for movies).', 'error');
+            }
+        });
+
+        // Event listener for Enter key press in the input field
+        searchImdbInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+
+        // Event listener for the Movie navigation button
+        movieNavButton.addEventListener('click', () => {
+          window.location.href = 'movie.html'; // Redirect to movie.html
+        });
+
+        // Event listener for the Series navigation button
+        seriesNavButton.addEventListener('click', () => {
+            showSeriesView();
+            // Default series to load when switching to series mode
+            currentImdbId = 'tt3107288'; // Default IMDb ID for "Mr. Robot"
+            fetchSeriesDetails(currentImdbId);
+            showMessage('Switched to Series Mode. Enter an IMDb ID for a series.', 'info');
+        });
+
+        // Initialize the application when the window loads
+        window.onload = () => {
+            showSeriesView(); // Start in series view
+            fetchSeriesDetails(currentImdbId); // Fetch initial series details for the default IMDb ID
+        };
+    </script>
 </body>
 </html>
