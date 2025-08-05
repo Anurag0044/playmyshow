@@ -73,6 +73,10 @@
 
             <!-- Navigation for Movies and Series -->
             <div class="flex justify-center gap-4 mb-6">
+                <button id="homeNavButton"
+                    class="px-6 py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
+                    <i class="fas fa-home mr-2"></i> Home
+                </button>
                 <button id="movieNavButton"
                     class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
                     <i class="fas fa-film mr-2"></i> Movies
@@ -82,7 +86,7 @@
                     <i class="fas fa-tv mr-2"></i> Series
                 </button>
                 <button id="historyNavButton"
-                    class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
+                    class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center shadow-lg">
                     <i class="fas fa-history mr-2"></i> History
                 </button>
             </div>
@@ -99,6 +103,16 @@
             </div>
             <!-- Message container for errors or info -->
             <div id="messageContainer" class="mt-4 w-full text-center"></div>
+        </div>
+
+        <!-- Add this below the search bar, above the video player section -->
+        <div class="w-full max-w-4xl flex justify-center gap-4 mb-2">
+            <button id="server1Btn"
+                class="px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-semibold transition">Server
+                1</button>
+            <button id="server2Btn"
+                class="px-4 py-2 rounded-lg bg-purple-700 hover:bg-blue-800 text-white font-semibold transition">Server
+                2</button>
         </div>
 
         <!-- Video Player Section -->
@@ -153,8 +167,271 @@
 
     <script>
         // OMDb API key provided by the user
-       const _0x2194b4=_0x47ad;(function(_0x66cc66,_0x441ade){const _0x21dcc2=_0x47ad,_0x5f5a89=_0x66cc66();while(!![]){try{const _0x3421d4=parseInt(_0x21dcc2(0x104))/0x1*(-parseInt(_0x21dcc2(0x175))/0x2)+parseInt(_0x21dcc2(0x14c))/0x3*(-parseInt(_0x21dcc2(0x15d))/0x4)+-parseInt(_0x21dcc2(0x179))/0x5*(parseInt(_0x21dcc2(0x14d))/0x6)+-parseInt(_0x21dcc2(0x10a))/0x7+parseInt(_0x21dcc2(0x17d))/0x8*(parseInt(_0x21dcc2(0x15a))/0x9)+-parseInt(_0x21dcc2(0x172))/0xa+parseInt(_0x21dcc2(0x141))/0xb;if(_0x3421d4===_0x441ade)break;else _0x5f5a89['push'](_0x5f5a89['shift']());}catch(_0xee7ead){_0x5f5a89['push'](_0x5f5a89['shift']());}}}(_0x48d1,0x36343));const omdbApiKey=_0x2194b4(0xfe),appTitle=document[_0x2194b4(0x11a)](_0x2194b4(0xf6)),videoPlayer=document[_0x2194b4(0x11a)](_0x2194b4(0x138)),searchImdbInput=document[_0x2194b4(0x11a)](_0x2194b4(0x127)),searchButton=document[_0x2194b4(0x11a)](_0x2194b4(0x13b)),seasonsListDiv=document[_0x2194b4(0x11a)](_0x2194b4(0x10f)),episodesListDiv=document[_0x2194b4(0x11a)](_0x2194b4(0x12d)),currentSeasonDisplay=document[_0x2194b4(0x11a)](_0x2194b4(0x162)),movieNavButton=document[_0x2194b4(0x11a)](_0x2194b4(0x100)),seriesNavButton=document['getElementById'](_0x2194b4(0x170)),messageContainer=document[_0x2194b4(0x11a)]('messageContainer'),seriesInfoSection=document[_0x2194b4(0x11a)]('seriesInfoSection'),imdbInstructionsSection=document[_0x2194b4(0x11a)](_0x2194b4(0x134));let currentMode=_0x2194b4(0x165),currentImdbId='tt3107288',currentSeason=0x1,currentEpisode=0x1,totalSeasons=0x0;const seriesInstructionsHTML=_0x2194b4(0x154);function showMessage(_0x3538f,_0x38e110=_0x2194b4(0x148)){const _0xa9fe58=_0x2194b4;messageContainer[_0xa9fe58(0x13e)]='';const _0x2ce2f8=document[_0xa9fe58(0x150)]('div');_0x2ce2f8[_0xa9fe58(0xf5)]=_0xa9fe58(0xf3)+(_0x38e110===_0xa9fe58(0x14e)?_0xa9fe58(0x130):_0xa9fe58(0x12c)),_0x2ce2f8[_0xa9fe58(0x168)]=_0x3538f,messageContainer['appendChild'](_0x2ce2f8),setTimeout(()=>{messageContainer['innerHTML']='';},0x1388);}function updateVideoPlayer(_0x3e368c){const _0x564389=_0x2194b4;if(_0x3e368c==='series')videoPlayer['src']=_0x564389(0xfa)+currentImdbId+'&s='+currentSeason+'&e='+currentEpisode;else _0x3e368c===_0x564389(0xee)&&(videoPlayer[_0x564389(0x118)]=_0x564389(0x177)+currentImdbId);console['log'](_0x564389(0x15e)+videoPlayer[_0x564389(0x118)]);}function showSeriesView(){const _0x4fef54=_0x2194b4;currentMode=_0x4fef54(0x165),appTitle[_0x4fef54(0x168)]=_0x4fef54(0x11b),searchImdbInput[_0x4fef54(0x16b)]=_0x4fef54(0x135),seriesInfoSection[_0x4fef54(0x108)][_0x4fef54(0x129)]=_0x4fef54(0xfc),imdbInstructionsSection[_0x4fef54(0x13e)]=seriesInstructionsHTML,seriesNavButton[_0x4fef54(0x105)]['remove'](_0x4fef54(0x115),_0x4fef54(0x12e)),seriesNavButton[_0x4fef54(0x105)][_0x4fef54(0x11d)]('bg-purple-700'),movieNavButton[_0x4fef54(0x105)][_0x4fef54(0x15c)]('bg-blue-700'),movieNavButton[_0x4fef54(0x105)][_0x4fef54(0x11d)]('bg-blue-600','hover:bg-blue-700');}function _0x48d1(){const _0x275139=['appendChild','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','style','querySelector','2963653ItWfjr','Failed\x20to\x20fetch\x20movie\x20details.\x20Please\x20check\x20your\x20network\x20or\x20try\x20again.','Loading\x20series\x20details...','p-3\x20mb-2\x20rounded-lg\x20bg-gray-700\x20hover:bg-purple-800\x20cursor-pointer\x20transition\x20flex\x20justify-between\x20items-center','location','seasonsList','Response','Season\x20','bg-purple-700','hover:bg-purple-600','No\x20seasons\x20found\x20for\x20this\x20series.','bg-purple-600','forEach','<p\x20class=\x22text-gray-400\x20text-center\x22>No\x20history\x20found.</p>','src','No\x20episodes\x20found\x20for\x20Season\x20','getElementById','PlayMyShow\x20-\x20Series','Failed\x20to\x20fetch\x20episodes\x20for\x20Season\x20','add','PlayMyShow\x20-\x20Movies','onclick','Now\x20playing\x20movie:\x20','tt3107288','slice','title','Year','No\x20episodes\x20found.','Type','searchImdbInput','https://www.omdbapi.com/?i=','display','toLocaleString','Title','bg-blue-800\x20text-blue-200','episodesList','hover:bg-purple-700','value','bg-red-800\x20text-red-200','playmyshow_history','addEventListener','click','imdbInstructionsSection','Enter\x20IMDb\x20ID\x20(e.g.,\x20tt3107288)','Enter','&apikey=','videoPlayer','startsWith','totalSeasons','searchButton','<p\x20class=\x22text-gray-400\x20text-sm\x22>No\x20seasons\x20available.</p>','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-gray-400\x20text-xs\x20ml-2\x22>','innerHTML','hidden','Unknown\x20error','9927742aMEiLY','length','shadow-md','p-3\x20mb-2\x20rounded-lg\x20bg-gray-700\x20hover:bg-purple-800\x20transition\x20duration-200\x20ease-in-out\x20cursor-pointer\x20shadow-sm','div','Failed\x20to\x20fetch\x20episodes.','historyModal','info','.\x20Please\x20check\x20your\x20network\x20or\x20try\x20again.','text-white','hover:text-white','5181hyqUpI','186174mFBPLY','error','Failed\x20to\x20fetch\x20series\x20details.\x20Please\x20check\x20your\x20network\x20or\x20try\x20again.','createElement','parse','date','True','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3\x20class=\x22text-xl\x20font-semibold\x20mb-3\x20text-purple-300\x22>🧩\x20Need\x20the\x20IMDb\x20Series\x20ID?\x20Here\x27s\x20How\x20to\x20Find\x20It\x20Like\x20a\x20Pro:</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<ul\x20class=\x22list-none\x20p-0\x20mb-4\x20text-left\x20inline-block\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<li\x20class=\x22mb-2\x20text-gray-300\x22><span\x20class=\x22font-bold\x20text-purple-200\x22>🔍</span>\x20Head\x20to\x20<a\x20href=\x22https://www.imdb.com\x22\x20target=\x22_blank\x22\x20class=\x22text-blue-400\x20hover:underline\x22>IMDb.com</a>\x20and\x20search\x20for\x20your\x20favorite\x20show.</li>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<li\x20class=\x22mb-2\x20text-gray-300\x22><span\x20class=\x22font-bold\x20text-purple-200\x22>🖱️</span>\x20Click\x20on\x20the\x20series,\x20and\x20look\x20at\x20the\x20URL\x20in\x20your\x20browser.</li>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<li\x20class=\x22text-gray-300\x22><span\x20class=\x22font-bold\x20text-purple-200\x22>🎯</span>\x20Grab\x20the\x20code\x20that\x20starts\x20with\x20<code\x20class=\x22bg-gray-700\x20px-1\x20rounded\x20text-purple-100\x22>tt</code>\x20—\x20that’s\x20your\x20magic\x20key!</li>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</ul>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-gray-300\x20font-semibold\x20mb-4\x22>🧠\x20Example:</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-gray-400\x20mb-2\x22>URL:\x20<span\x20class=\x22text-blue-400\x22>https://www.imdb.com/title/tt3107288/</span></p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-gray-400\x20font-bold\x20mb-6\x22>Your\x20ID:\x20<span\x20class=\x22text-purple-400\x22>tt3107288</span></p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-gray-500\x20text-sm\x22>Made\x20with\x20♥\x20by:\x20<span\x20class=\x22font-bold\x20text-purple-400\x22>HAHA\x20W40</span></p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','&e=','Error:\x20','imdbId','m-1\x20px-4\x20py-2\x20rounded-lg\x20font-medium\x20transition\x20duration-200\x20ease-in-out\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','#episodesList\x20div','92709LvQQKY','<span\x20class=\x22font-semibold\x20text-purple-200\x22>E','remove','164tAdUWG','Video\x20player\x20updated\x20to:\x20','href','Episode','trim','currentSeasonDisplay','Switched\x20to\x20Series\x20Mode.\x20Enter\x20an\x20IMDb\x20ID\x20for\x20a\x20series.','removeItem','series','button','none','textContent','Movie\x20not\x20found\x20or\x20it\x20is\x20not\x20a\x20movie\x20type.\x20Please\x20try\x20a\x20different\x20IMDb\x20ID.',':</span>\x20','placeholder','bg-gray-700','type','setItem','Episodes','seriesNavButton','Loading\x20movie\x20details...','1111310pUnVSo','N/A','bg-blue-700','129518zzGebF','getItem','https://www.2embed.cc/embed/','toISOString','5FKKxju','Enter\x20IMDb\x20Movie\x20ID\x20(e.g.,\x20tt10676048)','historyList','stringify','16dwdNYW','hover:bg-purple-800','movie.html','json','Error\x20fetching\x20movie\x20details:','querySelectorAll','Error\x20fetching\x20episodes\x20for\x20Season\x20','movie','&s=','keypress','bg-gray-600','clearHistoryBtn','p-2\x20my-2\x20rounded-md\x20','<p\x20class=\x22text-gray-400\x20text-sm\x22>Loading\x20episodes...</p>','className','appTitle','Now\x20playing\x20series:\x20','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22text-xs\x20text-gray-500\x22>','Please\x20enter\x20a\x20valid\x20IMDb\x20ID\x20starting\x20with\x20\x22tt\x22\x20(e.g.,\x20tt3107288\x20for\x20series,\x20tt10676048\x20for\x20movies).','https://www.2embed.skin/embedtv/','Error\x20fetching\x20series\x20details:','grid','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22font-semibold\x20text-purple-200\x22>','98e7e519','historyNavButton','movieNavButton','Could\x20not\x20find\x20series\x20or\x20it\x27s\x20not\x20a\x20series:\x20','text-gray-200','Error\x20fetching\x20movie\x20details\x20for\x20','1vAEzok','classList'];_0x48d1=function(){return _0x275139;};return _0x48d1();}function showMoviesView(){const _0x5cb7b0=_0x2194b4;currentMode='movie',appTitle['textContent']=_0x5cb7b0(0x11e),searchImdbInput[_0x5cb7b0(0x16b)]=_0x5cb7b0(0x17a),seriesInfoSection[_0x5cb7b0(0x108)][_0x5cb7b0(0x129)]=_0x5cb7b0(0x167),imdbInstructionsSection[_0x5cb7b0(0x13e)]=movieInstructionsHTML,movieNavButton[_0x5cb7b0(0x105)][_0x5cb7b0(0x15c)]('bg-blue-600','hover:bg-blue-700'),movieNavButton[_0x5cb7b0(0x105)][_0x5cb7b0(0x11d)](_0x5cb7b0(0x174)),seriesNavButton[_0x5cb7b0(0x105)][_0x5cb7b0(0x15c)](_0x5cb7b0(0x112)),seriesNavButton[_0x5cb7b0(0x105)]['add']('bg-purple-600','hover:bg-purple-700');}function _0x47ad(_0x27dd78,_0x4f28b5){const _0x48d13d=_0x48d1();return _0x47ad=function(_0x47ad4d,_0x56e0c4){_0x47ad4d=_0x47ad4d-0xe9;let _0x3d397e=_0x48d13d[_0x47ad4d];return _0x3d397e;},_0x47ad(_0x27dd78,_0x4f28b5);}async function fetchSeriesDetails(_0x221835){const _0x4d71d5=_0x2194b4;showMessage(_0x4d71d5(0x10c),_0x4d71d5(0x148)),seasonsListDiv[_0x4d71d5(0x13e)]='<p\x20class=\x22text-gray-400\x20text-sm\x22>Loading\x20seasons...</p>',episodesListDiv[_0x4d71d5(0x13e)]=_0x4d71d5(0xf4),currentSeasonDisplay[_0x4d71d5(0x168)]=_0x4d71d5(0x173);try{const _0x578ab4=await fetch(_0x4d71d5(0x128)+_0x221835+_0x4d71d5(0x137)+omdbApiKey),_0x4e4db4=await _0x578ab4['json']();if(_0x4e4db4[_0x4d71d5(0x110)]===_0x4d71d5(0x153)&&_0x4e4db4[_0x4d71d5(0x126)]===_0x4d71d5(0x165)){currentImdbId=_0x221835,totalSeasons=parseInt(_0x4e4db4[_0x4d71d5(0x13a)],0xa),renderSeasons();if(totalSeasons>=0x1){currentSeason=0x1,await fetchSeasonEpisodes(currentImdbId,currentSeason),updateVideoPlayer(_0x4d71d5(0x165));const _0x60337a=seasonsListDiv[_0x4d71d5(0x109)](_0x4d71d5(0x166));_0x60337a&&(_0x60337a['classList']['remove']('bg-gray-600',_0x4d71d5(0x113),_0x4d71d5(0x102),'hover:text-white'),_0x60337a[_0x4d71d5(0x105)][_0x4d71d5(0x11d)](_0x4d71d5(0x112),_0x4d71d5(0x14a),_0x4d71d5(0x143))),showMessage(_0x4d71d5(0xf7)+_0x4e4db4['Title'],_0x4d71d5(0x148));}else showMessage(seasonsListDiv,'No\x20seasons\x20found\x20for\x20this\x20series.',_0x4d71d5(0x14e)),showMessage(episodesListDiv,_0x4d71d5(0x125),_0x4d71d5(0x14e));}else totalSeasons=0x0,renderSeasons(),showMessage(_0x4d71d5(0x101)+(_0x4e4db4['Error']||_0x4d71d5(0x140)),'error'),showMessage(episodesListDiv,_0x4d71d5(0x125),'error');}catch(_0x1f24e2){console[_0x4d71d5(0x14e)]('Error\x20fetching\x20series\x20details:',_0x1f24e2),totalSeasons=0x0,renderSeasons(),showMessage(_0x4d71d5(0x14f),'error'),showMessage(episodesListDiv,'Failed\x20to\x20fetch\x20episodes.',_0x4d71d5(0x14e));}}async function fetchMovieDetails(_0xd66233){const _0x1409da=_0x2194b4;showMessage('Loading\x20movie\x20details...','info');try{const _0x5e09f5=await fetch('https://www.omdbapi.com/?i='+_0xd66233+'&apikey='+omdbApiKey),_0xe0672c=await _0x5e09f5[_0x1409da(0xea)]();if(_0xe0672c[_0x1409da(0x110)]==='True'&&_0xe0672c[_0x1409da(0x126)]===_0x1409da(0xee))currentImdbId=_0xd66233,updateVideoPlayer(_0x1409da(0xee)),showMessage('Now\x20playing\x20movie:\x20'+_0xe0672c['Title']+'\x20('+_0xe0672c[_0x1409da(0x124)]+')',_0x1409da(0x148));else{const _0x5d07eb=_0xe0672c['Error']||_0x1409da(0x169);showMessage(_0x1409da(0x156)+_0x5d07eb,_0x1409da(0x14e)),console[_0x1409da(0x14e)](_0x1409da(0x103)+_0xd66233+':',_0x5d07eb);}}catch(_0xe328bc){console[_0x1409da(0x14e)](_0x1409da(0xeb),_0xe328bc),showMessage(_0x1409da(0x10b),_0x1409da(0x14e));}}function renderSeasons(){const _0x379f1f=_0x2194b4;seasonsListDiv['innerHTML']='';if(totalSeasons===0x0){seasonsListDiv[_0x379f1f(0x13e)]=_0x379f1f(0x13c);return;}for(let _0x21d792=0x1;_0x21d792<=totalSeasons;_0x21d792++){const _0x122dee=document[_0x379f1f(0x150)](_0x379f1f(0x166));_0x122dee[_0x379f1f(0x168)]=_0x379f1f(0x111)+_0x21d792,_0x122dee[_0x379f1f(0xf5)]=_0x379f1f(0x158)+(_0x21d792===currentSeason?'bg-purple-700\x20text-white\x20shadow-md':'bg-gray-600\x20hover:bg-purple-600\x20text-gray-200\x20hover:text-white'),_0x122dee['onclick']=async()=>{const _0x400026=_0x379f1f;currentSeason=_0x21d792,currentEpisode=0x1,await fetchSeasonEpisodes(currentImdbId,currentSeason),updateVideoPlayer('series'),document[_0x400026(0xec)]('#seasonsList\x20button')[_0x400026(0x116)](_0x1c7bcb=>{const _0x453b64=_0x400026;_0x1c7bcb[_0x453b64(0x105)]['remove'](_0x453b64(0x112),'text-white',_0x453b64(0x143)),_0x1c7bcb[_0x453b64(0x105)][_0x453b64(0x11d)]('bg-gray-600',_0x453b64(0x113),_0x453b64(0x102),_0x453b64(0x14b));}),_0x122dee[_0x400026(0x105)][_0x400026(0x15c)](_0x400026(0xf1),_0x400026(0x113),_0x400026(0x102),_0x400026(0x14b)),_0x122dee[_0x400026(0x105)][_0x400026(0x11d)](_0x400026(0x112),_0x400026(0x14a),'shadow-md');},seasonsListDiv[_0x379f1f(0x106)](_0x122dee);}}async function fetchSeasonEpisodes(_0x30eec2,_0x4a2247){const _0x4f20ed=_0x2194b4;episodesListDiv[_0x4f20ed(0x13e)]=_0x4f20ed(0xf4),currentSeasonDisplay['textContent']=_0x4a2247;try{const _0x256ee3=await fetch(_0x4f20ed(0x128)+_0x30eec2+'&Season='+_0x4a2247+'&apikey='+omdbApiKey),_0x10db2f=await _0x256ee3[_0x4f20ed(0xea)]();episodesListDiv[_0x4f20ed(0x13e)]='',_0x10db2f['Response']===_0x4f20ed(0x153)&&_0x10db2f['Episodes']&&_0x10db2f[_0x4f20ed(0x16f)]['length']>0x0?_0x10db2f['Episodes'][_0x4f20ed(0x116)](_0x3fb0c1=>{const _0x3e3ed3=_0x4f20ed,_0x36660b=document['createElement'](_0x3e3ed3(0x145));_0x36660b['className']=_0x3e3ed3(0x144),_0x36660b[_0x3e3ed3(0x13e)]=_0x3e3ed3(0x15b)+_0x3fb0c1[_0x3e3ed3(0x160)]+_0x3e3ed3(0x16a)+_0x3fb0c1[_0x3e3ed3(0x12b)],_0x36660b[_0x3e3ed3(0x11f)]=()=>{const _0x3ddfad=_0x3e3ed3;currentEpisode=parseInt(_0x3fb0c1[_0x3ddfad(0x160)],0xa),videoPlayer[_0x3ddfad(0x118)]='https://www.2embed.skin/embedtv/'+currentImdbId+_0x3ddfad(0xef)+currentSeason+_0x3ddfad(0x155)+currentEpisode,document[_0x3ddfad(0xec)](_0x3ddfad(0x159))['forEach'](_0x44630f=>{const _0x371fd1=_0x3ddfad;_0x44630f['classList'][_0x371fd1(0x15c)]('bg-purple-600'),_0x44630f[_0x371fd1(0x105)]['add'](_0x371fd1(0x16c),_0x371fd1(0x17e));}),_0x36660b[_0x3ddfad(0x105)][_0x3ddfad(0x15c)](_0x3ddfad(0x16c),_0x3ddfad(0x17e)),_0x36660b[_0x3ddfad(0x105)][_0x3ddfad(0x11d)]('bg-purple-600');},episodesListDiv[_0x3e3ed3(0x106)](_0x36660b);}):showMessage(episodesListDiv,_0x4f20ed(0x119)+_0x4a2247+'.\x20'+(_0x10db2f['Error']||''),_0x4f20ed(0x14e));}catch(_0x1597b5){console['error'](_0x4f20ed(0xed)+_0x4a2247+':',_0x1597b5),showMessage(episodesListDiv,_0x4f20ed(0x11c)+_0x4a2247+_0x4f20ed(0x149),'error');}}searchButton[_0x2194b4(0x132)](_0x2194b4(0x133),()=>{const _0x382643=_0x2194b4,_0x124d92=searchImdbInput[_0x382643(0x12f)][_0x382643(0x161)]();_0x124d92[_0x382643(0x139)]('tt')&&_0x124d92[_0x382643(0x142)]>=0x9?currentMode===_0x382643(0x165)?fetchSeriesDetails(_0x124d92):fetchMovieDetails(_0x124d92):showMessage(_0x382643(0xf9),_0x382643(0x14e));}),searchImdbInput[_0x2194b4(0x132)](_0x2194b4(0xf0),_0x57b7b9=>{const _0x4c1ea3=_0x2194b4;_0x57b7b9['key']===_0x4c1ea3(0x136)&&searchButton[_0x4c1ea3(0x133)]();}),movieNavButton[_0x2194b4(0x132)]('click',()=>{const _0x2d48e5=_0x2194b4;window[_0x2d48e5(0x10e)][_0x2d48e5(0x15f)]=_0x2d48e5(0xe9);}),seriesNavButton[_0x2194b4(0x132)](_0x2194b4(0x133),()=>{const _0x55c4dc=_0x2194b4;showSeriesView(),currentImdbId=_0x55c4dc(0x121),fetchSeriesDetails(currentImdbId),showMessage(_0x55c4dc(0x163),_0x55c4dc(0x148));});function saveToHistory(_0x262613,_0x1004cc,_0x1634ab){const _0x2e758f=_0x2194b4;let _0x347547=JSON[_0x2e758f(0x151)](localStorage['getItem'](_0x2e758f(0x131))||'[]');_0x347547=_0x347547['filter'](_0x5b2440=>_0x5b2440[_0x2e758f(0x157)]!==_0x262613||_0x5b2440['type']!==_0x1634ab),_0x347547['unshift']({'imdbId':_0x262613,'title':_0x1004cc,'type':_0x1634ab,'date':new Date()[_0x2e758f(0x178)]()});if(_0x347547[_0x2e758f(0x142)]>0x1e)_0x347547=_0x347547[_0x2e758f(0x122)](0x0,0x1e);localStorage[_0x2e758f(0x16e)](_0x2e758f(0x131),JSON[_0x2e758f(0x17c)](_0x347547));}function renderHistory(){const _0x22c2d2=_0x2194b4,_0x311377=document[_0x22c2d2(0x11a)](_0x22c2d2(0x17b));let _0x5a5598=JSON[_0x22c2d2(0x151)](localStorage[_0x22c2d2(0x176)]('playmyshow_history')||'[]');if(_0x5a5598['length']===0x0){_0x311377[_0x22c2d2(0x13e)]=_0x22c2d2(0x117);return;}_0x311377['innerHTML']='',_0x5a5598[_0x22c2d2(0x116)](_0x52f315=>{const _0x474d95=_0x22c2d2,_0x3e4dba=document[_0x474d95(0x150)](_0x474d95(0x145));_0x3e4dba[_0x474d95(0xf5)]=_0x474d95(0x10d),_0x3e4dba[_0x474d95(0x13e)]=_0x474d95(0xfd)+(_0x52f315[_0x474d95(0x16d)]===_0x474d95(0x165)?'📺':'🎬')+'\x20'+_0x52f315[_0x474d95(0x123)]+_0x474d95(0x13d)+_0x52f315[_0x474d95(0x157)]+_0x474d95(0xf8)+new Date(_0x52f315[_0x474d95(0x152)])[_0x474d95(0x12a)]()+_0x474d95(0x107),_0x3e4dba[_0x474d95(0x11f)]=()=>{const _0x2e65b4=_0x474d95;document['getElementById'](_0x2e65b4(0x147))[_0x2e65b4(0x105)][_0x2e65b4(0x11d)](_0x2e65b4(0x13f)),_0x52f315[_0x2e65b4(0x16d)]===_0x2e65b4(0x165)?(showSeriesView(),fetchSeriesDetails(_0x52f315[_0x2e65b4(0x157)])):(showMoviesView(),fetchMovieDetails(_0x52f315[_0x2e65b4(0x157)]));},_0x311377[_0x474d95(0x106)](_0x3e4dba);});}function showHistoryModal(){const _0x6e5b4b=_0x2194b4;renderHistory(),document[_0x6e5b4b(0x11a)](_0x6e5b4b(0x147))['classList'][_0x6e5b4b(0x15c)](_0x6e5b4b(0x13f));}function hideHistoryModal(){const _0x9a7996=_0x2194b4;document['getElementById']('historyModal')[_0x9a7996(0x105)][_0x9a7996(0x11d)](_0x9a7996(0x13f));}document[_0x2194b4(0x11a)](_0x2194b4(0xff))[_0x2194b4(0x132)](_0x2194b4(0x133),showHistoryModal),document[_0x2194b4(0x11a)]('closeHistoryModal')['addEventListener'](_0x2194b4(0x133),hideHistoryModal),document[_0x2194b4(0x11a)](_0x2194b4(0x147))['addEventListener'](_0x2194b4(0x133),_0x50ef72=>{const _0x33b580=_0x2194b4;if(_0x50ef72['target']===document[_0x33b580(0x11a)]('historyModal'))hideHistoryModal();}),document[_0x2194b4(0x11a)](_0x2194b4(0xf2))['addEventListener'](_0x2194b4(0x133),()=>{const _0x3b4efb=_0x2194b4;localStorage[_0x3b4efb(0x164)](_0x3b4efb(0x131)),renderHistory();});async function fetchSeriesDetails(_0x2efd29){const _0x37c7c0=_0x2194b4;showMessage(_0x37c7c0(0x10c),_0x37c7c0(0x148)),seasonsListDiv[_0x37c7c0(0x13e)]='<p\x20class=\x22text-gray-400\x20text-sm\x22>Loading\x20seasons...</p>',episodesListDiv['innerHTML']=_0x37c7c0(0xf4),currentSeasonDisplay[_0x37c7c0(0x168)]=_0x37c7c0(0x173);try{const _0x280d07=await fetch(_0x37c7c0(0x128)+_0x2efd29+_0x37c7c0(0x137)+omdbApiKey),_0x8e0831=await _0x280d07['json']();if(_0x8e0831[_0x37c7c0(0x110)]===_0x37c7c0(0x153)&&_0x8e0831[_0x37c7c0(0x126)]===_0x37c7c0(0x165)){currentImdbId=_0x2efd29,totalSeasons=parseInt(_0x8e0831[_0x37c7c0(0x13a)],0xa),renderSeasons();if(totalSeasons>=0x1){currentSeason=0x1,await fetchSeasonEpisodes(currentImdbId,currentSeason),updateVideoPlayer(_0x37c7c0(0x165));const _0x538583=seasonsListDiv['querySelector'](_0x37c7c0(0x166));_0x538583&&(_0x538583[_0x37c7c0(0x105)]['remove'](_0x37c7c0(0xf1),'hover:bg-purple-600','text-gray-200','hover:text-white'),_0x538583[_0x37c7c0(0x105)][_0x37c7c0(0x11d)](_0x37c7c0(0x112),_0x37c7c0(0x14a),_0x37c7c0(0x143))),showMessage('Now\x20playing\x20series:\x20'+_0x8e0831[_0x37c7c0(0x12b)],_0x37c7c0(0x148)),saveToHistory(_0x2efd29,_0x8e0831['Title'],_0x37c7c0(0x165));}else showMessage(seasonsListDiv,_0x37c7c0(0x114),_0x37c7c0(0x14e)),showMessage(episodesListDiv,_0x37c7c0(0x125),_0x37c7c0(0x14e));}else totalSeasons=0x0,renderSeasons(),showMessage(_0x37c7c0(0x101)+(_0x8e0831['Error']||_0x37c7c0(0x140)),_0x37c7c0(0x14e)),showMessage(episodesListDiv,'No\x20episodes\x20found.',_0x37c7c0(0x14e));}catch(_0x5ce805){console[_0x37c7c0(0x14e)](_0x37c7c0(0xfb),_0x5ce805),totalSeasons=0x0,renderSeasons(),showMessage(_0x37c7c0(0x14f),'error'),showMessage(episodesListDiv,_0x37c7c0(0x146),_0x37c7c0(0x14e));}}async function fetchMovieDetails(_0x213564){const _0x3c5baf=_0x2194b4;showMessage(_0x3c5baf(0x171),_0x3c5baf(0x148));try{const _0x5d6bee=await fetch('https://www.omdbapi.com/?i='+_0x213564+_0x3c5baf(0x137)+omdbApiKey),_0x5ea457=await _0x5d6bee[_0x3c5baf(0xea)]();if(_0x5ea457[_0x3c5baf(0x110)]==='True'&&_0x5ea457[_0x3c5baf(0x126)]===_0x3c5baf(0xee))currentImdbId=_0x213564,updateVideoPlayer(_0x3c5baf(0xee)),showMessage(_0x3c5baf(0x120)+_0x5ea457[_0x3c5baf(0x12b)]+'\x20('+_0x5ea457['Year']+')',_0x3c5baf(0x148)),saveToHistory(_0x213564,_0x5ea457[_0x3c5baf(0x12b)],'movie');else{const _0x1fc438=_0x5ea457['Error']||'Movie\x20not\x20found\x20or\x20it\x20is\x20not\x20a\x20movie\x20type.\x20Please\x20try\x20a\x20different\x20IMDb\x20ID.';showMessage(_0x3c5baf(0x156)+_0x1fc438,_0x3c5baf(0x14e)),console[_0x3c5baf(0x14e)](_0x3c5baf(0x103)+_0x213564+':',_0x1fc438);}}catch(_0x58299e){console[_0x3c5baf(0x14e)](_0x3c5baf(0xeb),_0x58299e),showMessage(_0x3c5baf(0x10b),'error');}}window['onload']=()=>{showSeriesView(),fetchSeriesDetails(currentImdbId);};
-    </script>
+        const omdbApiKey = '98e7e519';
+
+        // Get references to DOM elements
+        const appTitle = document.getElementById('appTitle');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const searchImdbInput = document.getElementById('searchImdbInput');
+        const searchButton = document.getElementById('searchButton');
+        const seasonsListDiv = document.getElementById('seasonsList');
+        const episodesListDiv = document.getElementById('episodesList');
+        const currentSeasonDisplay = document.getElementById('currentSeasonDisplay');
+        const homeNavButton = document.getElementById('homeNavButton');
+        const movieNavButton = document.getElementById('movieNavButton');
+        const seriesNavButton = document.getElementById('seriesNavButton');
+        const messageContainer = document.getElementById('messageContainer');
+        const seriesInfoSection = document.getElementById('seriesInfoSection');
+        const imdbInstructionsSection = document.getElementById('imdbInstructionsSection');
+        const server1Btn = document.getElementById('server1Btn');
+        const server2Btn = document.getElementById('server2Btn');
+
+        // State variables
+        let currentServer = 1; // Default to Server 1
+        let currentImdbId = 'tt3107288'; // Default IMDb ID for "Mr. Robot"
+        let currentSeason = 1;
+        let currentEpisode = 1;
+        let totalSeasons = 0;
+
+        const seriesInstructionsHTML = `
+            <h3 class="text-xl font-semibold mb-3 text-purple-300">🧩 Need the IMDb Series ID? Here's How to Find It Like a Pro:</h3>
+            <ul class="list-none p-0 mb-4 text-left inline-block">
+                <li class="mb-2 text-gray-300"><span class="font-bold text-purple-200">🔍</span> Head to <a href="https://www.imdb.com" target="_blank" class="text-blue-400 hover:underline">IMDb.com</a> and search for your favorite show.</li>
+                <li class="mb-2 text-gray-300"><span class="font-bold text-purple-200">🖱️</span> Click on the series, and look at the URL in your browser.</li>
+                <li class="text-gray-300"><span class="font-bold text-purple-200">🎯</span> Grab the code that starts with <code class="bg-gray-700 px-1 rounded text-purple-100">tt</code> — that’s your magic key!</li>
+            </ul>
+            <p class="text-gray-300 font-semibold mb-4">🧠 Example:</p>
+            <p class="text-gray-400 mb-2">URL: <span class="text-blue-400">https://www.imdb.com/title/tt3107288/</span></p>
+            <p class="text-gray-400 font-bold mb-6">Your ID: <span class="text-purple-400">tt3107288</span></p>
+            <p class="text-gray-500 text-sm">Made with ♥ by: <span class="font-bold text-purple-400">Anurag</span></p>
+        `;
+
+        function showMessage(message, type = 'info') {
+            messageContainer.innerHTML = '';
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `p-2 my-2 rounded-md ${type === 'error' ? 'bg-red-800 text-red-200' : 'bg-blue-800 text-blue-200'}`;
+            msgDiv.textContent = message;
+            messageContainer.appendChild(msgDiv);
+            setTimeout(() => {
+                messageContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        function updateVideoPlayer() {
+            let src = '';
+            if (currentServer === 1) {
+                src = `https://www.2embed.skin/embedtv/${currentImdbId}&s=${currentSeason}&e=${currentEpisode}`;
+            } else {
+                src = `https://vidsrc.xyz/embed/tv/${currentImdbId}/${currentSeason}-${currentEpisode}`;
+            }
+            videoPlayer.src = src;
+        }
+
+        function showSeriesView() {
+            appTitle.textContent = 'PlayMyShow - Series';
+            searchImdbInput.placeholder = 'Enter IMDb ID (e.g., tt3107288)';
+            seriesInfoSection.style.display = 'grid';
+            imdbInstructionsSection.innerHTML = seriesInstructionsHTML;
+        }
+
+        async function fetchSeriesDetails(imdbId) {
+            showMessage('Loading series details...', 'info');
+            seasonsListDiv.innerHTML = '<p class="text-gray-400 text-sm">Loading seasons...</p>';
+            episodesListDiv.innerHTML = '<p class="text-gray-400 text-sm">Loading episodes...</p>';
+            currentSeasonDisplay.textContent = 'N/A';
+
+            try {
+                const response = await fetch(`https://www.omdbapi.com/?i=${imdbId}&apikey=${omdbApiKey}`);
+                const data = await response.json();
+
+                if (data.Response === 'True' && data.Type === 'series') {
+                    currentImdbId = imdbId;
+                    totalSeasons = parseInt(data.totalSeasons, 10);
+                    renderSeasons();
+
+                    if (totalSeasons >= 1) {
+                        currentSeason = 1;
+                        await fetchSeasonEpisodes(currentImdbId, 1);
+                        showMessage(`Now playing series: ${data.Title}`, 'info');
+                        saveToHistory(imdbId, data.Title, 'series');
+                    } else {
+                        episodesListDiv.innerHTML = '<p class="text-gray-400 text-sm">No episodes found.</p>';
+                    }
+                } else {
+                    totalSeasons = 0;
+                    renderSeasons();
+                    episodesListDiv.innerHTML = '<p class="text-gray-400 text-sm">No episodes found.</p>';
+                    showMessage(data.Error || "Could not find series.", 'error');
+                }
+            } catch (error) {
+                showMessage('Failed to fetch series details.', 'error');
+            }
+        }
+
+        function renderSeasons() {
+            seasonsListDiv.innerHTML = '';
+            if (totalSeasons === 0) {
+                seasonsListDiv.innerHTML = '<p class="text-gray-400 text-sm">No seasons available.</p>';
+                return;
+            }
+            for (let i = 1; i <= totalSeasons; i++) {
+                const seasonButton = document.createElement('button');
+                seasonButton.textContent = `Season ${i}`;
+                seasonButton.className = 'm-1 px-4 py-2 rounded-lg font-medium transition bg-gray-600 hover:bg-purple-600 text-gray-200';
+                seasonButton.onclick = async () => {
+                    currentSeason = i;
+                    await fetchSeasonEpisodes(currentImdbId, i);
+                    document.querySelectorAll('#seasonsList button').forEach(btn => btn.classList.remove('bg-purple-700', 'text-white'));
+                    seasonButton.classList.add('bg-purple-700', 'text-white');
+                };
+                seasonsListDiv.appendChild(seasonButton);
+            }
+        }
+
+        async function fetchSeasonEpisodes(imdbId, seasonNumber) {
+            episodesListDiv.innerHTML = '<p class="text-gray-400 text-sm">Loading episodes...</p>';
+            currentSeasonDisplay.textContent = seasonNumber;
+            try {
+                const response = await fetch(`https://www.omdbapi.com/?i=${imdbId}&Season=${seasonNumber}&apikey=${omdbApiKey}`);
+                const data = await response.json();
+                episodesListDiv.innerHTML = '';
+                if (data.Response === 'True' && data.Episodes) {
+                    data.Episodes.forEach(episode => {
+                        const episodeDiv = document.createElement('div');
+                        episodeDiv.className = 'p-3 mb-2 rounded-lg bg-gray-700 hover:bg-purple-800 transition cursor-pointer';
+                        episodeDiv.innerHTML = `<span class="font-semibold text-purple-200">E${episode.Episode}:</span> ${episode.Title}`;
+                        episodeDiv.onclick = () => {
+                            currentEpisode = parseInt(episode.Episode, 10);
+                            updateVideoPlayer();
+                            document.querySelectorAll('#episodesList div').forEach(div => div.classList.remove('bg-purple-600'));
+                            episodeDiv.classList.add('bg-purple-600');
+                        };
+                        episodesListDiv.appendChild(episodeDiv);
+                    });
+                    // Auto-play first episode of the season
+                    if (data.Episodes.length > 0) {
+                        currentEpisode = 1;
+                        updateVideoPlayer();
+                        episodesListDiv.children[0].classList.add('bg-purple-600');
+                    }
+                } else {
+                    episodesListDiv.innerHTML = `<p class="text-gray-400 text-sm">No episodes found for Season ${seasonNumber}.</p>`;
+                }
+            } catch (error) {
+                episodesListDiv.innerHTML = '<p class="text-gray-400 text-sm">Failed to fetch episodes.</p>';
+            }
+        }
+
+        function saveToHistory(imdbId, title, type) {
+            let history = JSON.parse(localStorage.getItem('playmyshow_history') || '[]');
+            history = history.filter(item => item.imdbId !== imdbId);
+            history.unshift({ imdbId, title, type, date: new Date().toISOString() });
+            if (history.length > 30) history = history.slice(0, 30);
+            localStorage.setItem('playmyshow_history', JSON.stringify(history));
+        }
+
+        function renderHistory() {
+            const historyList = document.getElementById('historyList');
+            let history = JSON.parse(localStorage.getItem('playmyshow_history') || '[]');
+            historyList.innerHTML = history.length ? '' : `<p class="text-gray-400 text-center">No history found.</p>`;
+            history.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'p-3 mb-2 rounded-lg bg-gray-700 hover:bg-purple-800 cursor-pointer flex justify-between items-center';
+                div.innerHTML = `<div><span class="font-semibold text-purple-200">${item.type === 'series' ? '📺' : '🎬'} ${item.title}</span><span class="text-gray-400 text-xs ml-2">${item.imdbId}</span></div><span class="text-xs text-gray-500">${new Date(item.date).toLocaleString()}</span>`;
+                div.onclick = () => {
+                    hideHistoryModal();
+                    if (item.type === 'series') {
+                        fetchSeriesDetails(item.imdbId);
+                    } else {
+                        window.location.href = `../for_movie/movie.html?imdbId=${item.imdbId}`;
+                    }
+                };
+                historyList.appendChild(div);
+            });
+        }
+
+        function showHistoryModal() {
+            renderHistory();
+            document.getElementById('historyModal').classList.remove('hidden');
+        }
+
+        function hideHistoryModal() {
+            document.getElementById('historyModal').classList.add('hidden');
+        }
+
+        // --- Event Listeners ---
+        searchButton.addEventListener('click', () => {
+            const inputVal = searchImdbInput.value.trim();
+            if (inputVal.startsWith('tt') && inputVal.length >= 7) {
+                fetchSeriesDetails(inputVal);
+            } else {
+                showMessage('Please enter a valid IMDb ID (e.g., tt3107288).', 'error');
+            }
+        });
+
+        searchImdbInput.addEventListener('keypress', e => e.key === 'Enter' && searchButton.click());
+        homeNavButton.addEventListener('click', () => window.location.href = '../index.html');
+        movieNavButton.addEventListener('click', () => window.location.href = '../for_movie/movie.html');
+        seriesNavButton.addEventListener('click', () => fetchSeriesDetails('tt3107288'));
+
+        // History Modal Listeners
+        document.getElementById('historyNavButton').addEventListener('click', showHistoryModal);
+        document.getElementById('closeHistoryModal').addEventListener('click', hideHistoryModal);
+        document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+            localStorage.removeItem('playmyshow_history');
+            renderHistory();
+        });
+
+        // Server Button Listeners
+        server1Btn.onclick = () => {
+            if (currentServer === 1) return;
+            currentServer = 1;
+            server1Btn.classList.add('bg-blue-800');
+            server1Btn.classList.remove('bg-purple-700');
+            server2Btn.classList.add('bg-purple-700');
+            server2Btn.classList.remove('bg-blue-800');
+            showMessage('Switched to Server 1', 'info');
+            updateVideoPlayer();
+        };
+
+        server2Btn.onclick = () => {
+            if (currentServer === 2) return;
+            currentServer = 2;
+            server2Btn.classList.add('bg-blue-800');
+            server2Btn.classList.remove('bg-purple-700');
+            server1Btn.classList.add('bg-purple-700');
+            server1Btn.classList.remove('bg-blue-800');
+            showMessage('Switched to Server 2', 'info');
+            updateVideoPlayer();
+        };
+
+        // --- Initial Load ---
+        window.onload = () => {
+            showSeriesView();
+            fetchSeriesDetails(currentImdbId);
+            server1Btn.classList.add('bg-blue-800');
+            server1Btn.classList.remove('bg-purple-700');
+        };
+// --- Security: Disable Right Click and Developer Tools ---
+    // ...existing code...
+    // --- Security: Disable Context Menu & F12 ---
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      // Block F12 (keyCode 123)
+      // Block Ctrl+Shift+I (keyCode 73)
+      // Block Ctrl+Shift+J (keyCode 74)
+      // Block Ctrl+U (keyCode 85)
+      if (e.keyCode === 123 || 
+         (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
+         (e.ctrlKey && e.keyCode === 85)) {
+        e.preventDefault();
+      }
+    });
+  </script>
+
 </body>
 
 </html>
