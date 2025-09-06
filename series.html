@@ -519,9 +519,12 @@
         });
 
         searchImdbInput.addEventListener('keypress', e => e.key === 'Enter' && searchButton.click());
-        homeNavButton.addEventListener('click', () => window.location.href = 'index.html');
-        movieNavButton.addEventListener('click', () => window.location.href = 'movie.html');
-        seriesNavButton.addEventListener('click', () => fetchSeriesDetails('tt3107288'));
+        homeNavButton.addEventListener('click', () => window.location.href = '../../index.html');
+        movieNavButton.addEventListener('click', () => window.location.href = '../for_movie/movie.html');
+        seriesNavButton.addEventListener('click', () => {
+            // If already on the series page, just reload the default series
+            fetchSeriesDetails('tt3107288');
+        });
 
         hamburgerButton.onclick = () => {
           hamburgerButton.classList.toggle('open');
@@ -581,11 +584,11 @@
               const clone = button.cloneNode(true);
               clone.className = "w-full py-3 rounded-full font-semibold transition duration-300 ease-in-out flex items-center justify-center shadow-lg";
               // Re-attach event listeners
-              if (clone.id === 'homeNavButton') clone.onclick = homeNavButton.onclick;
-              if (clone.id === 'movieNavButton') clone.onclick = movieNavButton.onclick;
-              if (clone.id === 'seriesNavButton') clone.onclick = seriesNavButton.onclick;
-              if (clone.id === 'watchlistNavButton') clone.onclick = showWatchlistModal;
-              if (clone.id === 'historyNavButton') clone.onclick = document.getElementById('historyNavButton').onclick;
+              if (clone.id === 'homeNavButton') clone.addEventListener('click', () => window.location.href = 'index.html');
+              if (clone.id === 'movieNavButton') clone.addEventListener('click', () => window.location.href = 'movie.html');
+              if (clone.id === 'seriesNavButton') clone.addEventListener('click', () => fetchSeriesDetails('tt3107288'));
+              if (clone.id === 'watchlistNavButton') clone.addEventListener('click', showWatchlistModal);
+              if (clone.id === 'historyNavButton') clone.addEventListener('click', showHistoryModal);
               mobileMenu.appendChild(clone);
             });
         };
