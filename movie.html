@@ -51,6 +51,20 @@
       scrollbar-width: thin;
       scrollbar-color: #a78bfa #374151;
     }
+
+    /* Hamburger Menu Icon Transformation */
+    #hamburgerButton.open .bar1 {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+    #hamburgerButton.open .bar2 {
+      opacity: 0;
+    }
+    #hamburgerButton.open .bar3 {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+    .hamburger-bar {
+      transition: all 0.3s ease-in-out;
+    }
   </style>
 </head>
 
@@ -58,8 +72,20 @@
   <div class="container mx-auto flex-grow flex flex-col items-center justify-center p-4">
     <!-- Header -->
     <div class="w-full max-w-2xl mb-6">
-      <h1 class="text-3xl md:text-4xl font-bold text-center mb-4 text-purple-400">PlayMyShow-movies</h1>
-      <div class="flex justify-center gap-4 mb-6">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-3xl md:text-4xl font-bold text-purple-400">PlayMyShow-movies</h1>
+        <!-- Hamburger Menu Button (Mobile Only) -->
+        <div class="md:hidden">
+          <button id="hamburgerButton" class="text-white focus:outline-none p-2">
+            <div class="w-6 h-0.5 bg-white hamburger-bar bar1"></div>
+            <div class="w-6 h-0.5 bg-white my-1.5 hamburger-bar bar2"></div>
+            <div class="w-6 h-0.5 bg-white hamburger-bar bar3"></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div id="desktopNav" class="hidden md:flex justify-center gap-4 mb-6">
         <button id="homeNavButton" class="px-6 py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
           <i class="fas fa-home mr-2"></i> Home
         </button>
@@ -69,9 +95,17 @@
         <button id="seriesNavButton" class="px-6 py-3 rounded-full bg-purple-600 hover:bg-purple-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
           <i class="fas fa-tv mr-2"></i> Series
         </button>
+        <button id="watchlistNavButton" class="px-6 py-3 rounded-full bg-yellow-600 hover:bg-yellow-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
+          <i class="fas fa-bookmark mr-2"></i> Watchlist
+        </button>
         <button id="historyNavButton" class="px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 flex items-center shadow-lg">
           <i class="fas fa-history mr-2"></i> History
         </button>
+      </div>
+
+      <!-- Mobile Navigation Menu -->
+      <div id="mobileMenu" class="hidden md:hidden flex flex-col items-center gap-4 mb-6">
+        <!-- Cloned buttons will be inserted here by JavaScript -->
       </div>
 
       <!-- Search Bar -->
@@ -91,6 +125,9 @@
     <div class="w-full max-w-4xl flex justify-center gap-4 mb-2">
       <button id="server1Btn" class="px-4 py-2 rounded-lg bg-purple-800 hover:bg-blue-800 text-white font-semibold transition">Server 1</button>
       <button id="server2Btn" class="px-4 py-2 rounded-lg bg-purple-800 hover:bg-blue-800 text-white font-semibold transition">Server 2</button>
+      <button id="addToWatchlistButton" class="px-4 py-2 rounded-lg bg-yellow-600 hover:bg-yellow-700 text-white font-semibold transition flex items-center">
+        <i class="fas fa-plus mr-2"></i> Add to Watchlist
+      </button>
     </div>
 
     <!-- Video Player Container -->
@@ -112,6 +149,17 @@
         Your ID: <span class="text-yellow-300">tt4574334</span>
       </p>
       <p class="mt-6 text-sm text-gray-400">Made with <span class="text-red-500">♥</span> by: <span class="font-bold text-gray-200">Anurag </span></p>
+    </div>
+
+    <!-- Watchlist Popup -->
+    <div id="watchlistPopup" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+      <div class="bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-md relative">
+        <button id="closeWatchlistPopup" class="absolute top-3 right-3 text-gray-400 hover:text-white text-2xl">&times;</button>
+        <h2 class="text-2xl font-bold text-yellow-400 mb-4 text-center">My Watchlist</h2>
+        <div id="watchlistList" class="max-h-80 overflow-y-auto custom-scrollbar pr-2">
+          <p class="text-gray-400 text-center" id="noWatchlistMessage">Your watchlist is empty. Add some movies!</p>
+        </div>
+      </div>
     </div>
 
     <!-- History Popup -->
@@ -166,9 +214,19 @@
     const cancelClearButton = document.getElementById('cancelClearButton');
     const server1Btn = document.getElementById('server1Btn');
     const server2Btn = document.getElementById('server2Btn');
+    const hamburgerButton = document.getElementById('hamburgerButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const desktopNav = document.getElementById('desktopNav');
+    const watchlistNavButton = document.getElementById('watchlistNavButton');
+    const watchlistPopup = document.getElementById('watchlistPopup');
+    const closeWatchlistPopup = document.getElementById('closeWatchlistPopup');
+    const watchlistList = document.getElementById('watchlistList');
+    const noWatchlistMessage = document.getElementById('noWatchlistMessage');
+    const addToWatchlistButton = document.getElementById('addToWatchlistButton');
 
     // State variables
     const HISTORY_KEY = 'playMyShowMovieHistory';
+    const WATCHLIST_KEY = 'playMyShowMovieWatchlist';
     let currentImdbId = 'tt10676048'; // Default movie ID
     let currentServer = 1; // Default to Server 1
 
@@ -201,6 +259,42 @@
       }
       videoPlayer.src = src;
       videoPlayerContainer.classList.remove('hidden');
+    }
+
+    /**
+     * Saves movie details to local storage watchlist.
+     */
+    async function addToWatchlist() {
+      if (!currentImdbId) {
+        showMessage('No movie selected to add to watchlist.', 'warning');
+        return;
+      }
+      try {
+        const res = await fetch(`https://www.omdbapi.com/?i=${currentImdbId}&apikey=${omdbApiKey}`);
+        const movieData = await res.json();
+        if (movieData.Response !== 'True' || movieData.Type !== 'movie') {
+          throw new Error('Could not fetch movie details.');
+        }
+
+        const watchlist = JSON.parse(localStorage.getItem(WATCHLIST_KEY)) || [];
+        if (watchlist.some(item => item.imdbId === currentImdbId)) {
+          showMessage(`"${movieData.Title}" is already in your watchlist.`, 'info');
+          return;
+        }
+
+        const poster = movieData.Poster && movieData.Poster !== 'N/A' ? movieData.Poster : '';
+        const title = movieData.Title || 'Unknown Title';
+        const newEntry = {
+          imdbId: currentImdbId,
+          title,
+          poster
+        };
+        const updated = [newEntry, ...watchlist];
+        localStorage.setItem(WATCHLIST_KEY, JSON.stringify(updated));
+        showMessage(`Added "${title}" to your watchlist!`, 'success');
+      } catch (e) {
+        showMessage(e.message || 'Error adding to watchlist.', 'error');
+      }
     }
 
     /**
@@ -243,6 +337,54 @@
         showMessage(e.message || 'Error loading movie. Please check the IMDb ID.', 'error');
         videoPlayerContainer.classList.add('hidden');
       }
+    }
+
+    /**
+     * Loads and displays the watchlist from local storage.
+     */
+    function loadWatchlist() {
+      const watchlist = JSON.parse(localStorage.getItem(WATCHLIST_KEY)) || [];
+      watchlistList.innerHTML = '';
+
+      if (!watchlist.length) {
+        noWatchlistMessage.classList.remove('hidden');
+      } else {
+        noWatchlistMessage.classList.add('hidden');
+        watchlist.forEach(item => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'bg-gray-700 p-3 rounded-lg mb-2 flex items-center justify-between';
+          const movieInfo = document.createElement('div');
+          movieInfo.className = 'flex-grow cursor-pointer hover:text-blue-300 flex items-center';
+          if (item.poster) {
+            const img = document.createElement('img');
+            img.src = item.poster;
+            img.alt = item.title;
+            img.className = 'w-16 h-24 object-cover rounded mr-3';
+            movieInfo.appendChild(img);
+          }
+          const text = document.createElement('div');
+          text.innerHTML = `<p class="font-semibold text-lg">${item.title}</p><p class="text-sm text-gray-400">${item.imdbId}</p>`;
+          movieInfo.appendChild(text);
+          movieInfo.onclick = () => {
+            fetchMovieDetails(item.imdbId);
+            watchlistPopup.classList.add('hidden');
+          };
+          const delBtn = document.createElement('button');
+          delBtn.className = 'ml-4 p-2 bg-red-600 hover:bg-red-700 text-white rounded-full';
+          delBtn.innerHTML = '<i class="fas fa-times"></i>';
+          delBtn.onclick = e => {
+            e.stopPropagation();
+            const updatedWatchlist = watchlist.filter(w => w.imdbId !== item.imdbId);
+            localStorage.setItem(WATCHLIST_KEY, JSON.stringify(updatedWatchlist));
+            loadWatchlist();
+            showMessage(`Removed "${item.title}" from watchlist.`, 'info');
+          };
+          wrapper.appendChild(movieInfo);
+          wrapper.appendChild(delBtn);
+          watchlistList.appendChild(wrapper);
+        });
+      }
+      watchlistPopup.classList.remove('hidden');
     }
 
     /**
@@ -316,6 +458,10 @@
     closeHistoryPopup.onclick = () => historyPopup.classList.add('hidden');
     clearHistoryButton.onclick = () => clearConfirmationDialog.classList.remove('hidden');
 
+    watchlistNavButton.onclick = loadWatchlist;
+    closeWatchlistPopup.onclick = () => watchlistPopup.classList.add('hidden');
+    addToWatchlistButton.onclick = addToWatchlist;
+
     confirmClearButton.onclick = () => {
       localStorage.removeItem(HISTORY_KEY);
       loadHistory();
@@ -334,6 +480,11 @@
     };
     seriesNavButton.onclick = () => {
       window.location.href = 'series.html';
+    };
+
+    hamburgerButton.onclick = () => {
+      hamburgerButton.classList.toggle('open');
+      mobileMenu.classList.toggle('hidden');
     };
 
     server1Btn.onclick = () => {
@@ -370,6 +521,20 @@
       // Set Server 1 as active on load
       server1Btn.classList.add('bg-blue-800');
       server1Btn.classList.remove('bg-purple-800');
+
+      // Clone desktop nav buttons for mobile menu
+      const navButtons = desktopNav.querySelectorAll('button');
+      navButtons.forEach(button => {
+        const clone = button.cloneNode(true);
+        clone.className = "w-full py-3 rounded-full font-semibold transition duration-300 ease-in-out flex items-center justify-center shadow-lg";
+        // Re-attach event listeners
+        if (clone.id === 'homeNavButton') clone.onclick = homeNavButton.onclick;
+        if (clone.id === 'movieNavButton') clone.onclick = movieNavButton.onclick;
+        if (clone.id === 'seriesNavButton') clone.onclick = seriesNavButton.onclick;
+        if (clone.id === 'watchlistNavButton') clone.onclick = watchlistNavButton.onclick;
+        if (clone.id === 'historyNavButton') clone.onclick = historyNavButton.onclick;
+        mobileMenu.appendChild(clone);
+      });
     };
     // --- Security: Disable Right Click and Developer Tools ---
     // ...existing code...
@@ -394,4 +559,3 @@
 </body>
 
 </html>
-
